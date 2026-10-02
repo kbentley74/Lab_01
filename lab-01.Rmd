@@ -129,11 +129,11 @@ visitors %>%
 _How many attractions had between 50,000 and 100,000 visitors in 2022?_
 
 ```{r Ex_f}
-#visitors %>% 
-#  ____(
-#    ______,
-#    ______ ) %>%
-#  count()
+visitors %>% 
+  filter(
+    n_2022 >= 5000,
+    n_2022 <= 100000 ) %>%
+  count()
 ```
 
 ### Exercise g.
@@ -141,9 +141,9 @@ _How many attractions had between 50,000 and 100,000 visitors in 2022?_
 _How many regions have more than 50 tourist attraction in the data set? (Hint: You will need to tabulate the data before filtering.)_
 
 ```{r Ex_g}
-#visitors %>% 
-#  _____(region) %>%
-#  filter(______)
+visitors %>% 
+  count(region) %>%
+  filter(n >= 50)
 ```
 
 
@@ -168,11 +168,11 @@ visitors %>%
 _Perform the same calculation for the 2021 admissions data._
 
 ```{r Ex_h}
-#visitors %>% 
-#  ______(
-#    __________,
-#    __________
-#  )
+visitors %>% 
+  summarise(
+    mean_2021 = mean(n_2021, na.rm = TRUE),
+    med_2021 = median(n_2021, na.rm = TRUE), 
+   )
 ```
 
 All values in the output are `NA`!
@@ -181,7 +181,7 @@ All values in the output are `NA`!
 
 _What does `NA` stand for and why are you getting this as your answer to the previous question._
 
-**Write your answer here**
+**Not applicable, which means that there is no data available for that row in the tibble. Some of the torist attractions have NA in n_2021**
 
 
 
@@ -190,7 +190,7 @@ _What does `NA` stand for and why are you getting this as your answer to the pre
 
 _Look at the help pages for the `mean()` and `median()` commands to see what the input argument `na.rm` does. Edit your code from exercise h so that it computes the summary statistics where data is available._
 
-**Write your answer here**
+**na.rm removes all the NA from the data set allowing the function to act on the data**
 
 
 
@@ -203,8 +203,8 @@ _Which setting (inside, outside or mixed) has the largest mean visitor numbers i
 visitors %>% 
   group_by(setting) %>%
   summarise(
-    mean_2022 = mean(n_2022),
-    med_2022 = median(n_2022)
+    mean_2022 = mean(n_2022, na.rm = TRUE),
+    med_2022 = median(n_2022, na.rm = TRUE),
   )
 ```
 
@@ -212,18 +212,18 @@ visitors %>%
 
 _Observe in question 6 that the mean statistics across all settings are much larger than the corresponding median statistics. Discuss in your group what this suggests about the data._
 
-**Write your answer here**
+**the popular attractions are vastly larger than the mean **
 
 ## Question 8
 
 ### Exercise l.
 
 ```{r Q8}
-#visitors %>% 
-#  summarise(
-#     __________,
-#     __________,
-#  )
+visitors %>% 
+  summarise(
+     max_2021 = max(n_2021, na.rm = TRUE),
+     min_2021 = min(n_2021, na.rm = TRUE)
+  )
 ```
 
 ## Question 9
@@ -254,8 +254,8 @@ _How many tourist attractions are there in each of the 4 nations? From this, dis
 
 
 ```{r Ex_l}
-#________ %>%
-#  ______(_______)
+visitors_with_nations %>%
+  count(nation)
 ```
 
 
@@ -267,9 +267,10 @@ _How many tourist attractions are there in each of the 4 nations? From this, dis
 _Within each of the 4 nations, what is the proportion of tourist attractions that have free admission for all visitors?_
 
 ```{r Ex_m}
-# Write your code here
 
-
+visitors_with_nations %>%
+  group_by(nation)
+  count(admission)
 ```
 
 
